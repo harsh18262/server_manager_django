@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from unlock_keyring import views
+from unlock_keyring import views as unlock_views
+from dashboard import views as dash_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home),
+    path('', unlock_views.home),
+    path('test/',unlock_views.data),
+    path('dash/',dash_views.home)
+
 ]

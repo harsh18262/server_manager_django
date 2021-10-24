@@ -1,0 +1,9 @@
+#Djangoo
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+
+password_db.kdbx

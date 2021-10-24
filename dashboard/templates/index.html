@@ -1,0 +1,58 @@
+{% extends 'base.html'%}
+<!---->
+{%block Terminal %} active {% endblock Terminal %}
+<!---->
+{% block content %} {% comment %}
+<script
+  type="text/javascript"
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"
+></script>
+<script type="text/javascript">
+  $(function () {
+    $("#button").click(function () {
+      if (!$("#iframe").length) {
+        $("#iframeHolder").html(
+          '<iframe id="iframe" src="http://localhost:8888/" width="700" height="450"></iframe>'
+        );
+      }
+    });
+  });
+</script>
+
+<button id="button">Button</button>
+<div id="iframeHolder"></div>
+{% endcomment %}
+<button onclick="dosome()">button</button>
+<iframe
+  id="iframe"
+  src="http://127.0.0.1:8888/"
+  width="700"
+  height="450"
+></iframe>
+<script>
+  const myframe = document.getElementById("iframe");
+  function dosome() {
+    const iframeWindow = myframe.contentWindow;
+    var hostname = "192.168.0.183";
+    var port = "22";
+    var username = "harsh";
+    var password = "khuljasimsim";
+     iframeWindow.postMessage("192.168.0.183|22|harsh|khuljasimsim", "*");
+     {% comment %} myframe.contentWindow.wssh.connect(
+      "192.168.0.183",
+      "22",
+      "harsh",
+      "khuljasimsim"
+    ); {% endcomment %}
+    console.log();
+  }
+</script>
+
+{% endblock content %}
+<!---->
+{%block options%}
+<option value="rigatoni">Rigatoni</option>
+<option value="dave">Dave</option>
+<option value="pumpernickel">Pumpernickel</option>
+
+{%endblock options%}

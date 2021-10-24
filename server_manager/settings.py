@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'unlock_keyring'
+    'unlock_keyring',
+    'dashboard'
 ]
 
 MIDDLEWARE = [
@@ -122,6 +123,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 VENV_PATH = os.path.dirname(BASE_DIR)
 STATIC_ROOT = os.path.join(VENV_PATH, 'static_root')
+
+ASSETS_URL = '/assets/'
+ASSETFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
+ASSETS_ROOT = os.path.join(VENV_PATH, 'assets_root')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
