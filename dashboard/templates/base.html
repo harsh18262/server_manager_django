@@ -23,6 +23,8 @@ window.gon={};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run
 <script src="{% static 'vendor.js'%}"></script>
 <script src="{% static 'application.js'%}"></script>
 <script src="{% static 'hallofmirrors/hallofmirrors.js'%}"></script>
+
+
 <!--[if lt IE 9]>
 <script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
 <![endif]-->
@@ -61,8 +63,8 @@ window.gon={};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run
 
 
 
-<link href="index.html" hreflang="en" rel="alternate">
-<link href="index.html" hreflang="x-default" rel="alternate">
+<link href="{% url 'dashboard' %}" hreflang="en" rel="alternate">
+<link href="{% url 'dashboard' %}" hreflang="x-default" rel="alternate">
 <link href="https_/www.qwiklabs.com/favicon-32.png" rel="shortcut icon">
 <link color="#3681E4" href="https://www.qwiklabs.com/favicon-svg.svg" rel="mask-icon">
 <link href="favicon-180.png" rel="apple-touch-icon-precomposed">
@@ -73,6 +75,9 @@ window.gon={};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run
 
 
 <link rel="stylesheet" media="all" href="{% static 'application.css' %}"/>
+  
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 
 <style>
   :root {
@@ -107,7 +112,7 @@ window.gon={};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run
 <ql-icon-button class="js-nav-toggle header__nav-panel-button l-mrm">menu</ql-icon-button>
 <div class="header__title">
 <h1 class="headline-5">
-<a class="logo" aria-label="Home" role="img" href="index.html"></a>
+<a class="logo" aria-label="Home" role="img" href="{% url 'dashboard' %}"></a>
 
 <input type="hidden" name="locale" id="header_locale"/>
 </form>
@@ -138,18 +143,25 @@ window.gon={};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run
 </div>
 
 <nav class="nav-bar">
-<a class="nav-bar__item js-navigation-button  {% block Terminal %}  {% endblock Terminal %}" aria-current="page" href="index.html"><ql-icon class="nav-bar__item__icon">
+<a class="nav-bar__item js-navigation-button  {% block Terminal %}  {% endblock Terminal %}" aria-current="page" href="{% url 'dashboard' %}"><ql-icon class="nav-bar__item__icon">
 home <!-- Icons -->
 </ql-icon>
 <span class="nav-bar__item__label">
 Terminal
 </span>
 </a>
-<a class="nav-bar__item js-navigation-button  {% block Monitoring %} test {% endblock Monitoring %}" href="https://www.qwiklabs.com/catalog"><ql-icon class="nav-bar__item__icon">
+<a class="nav-bar__item js-navigation-button  {% block Monitoring %}  {% endblock Monitoring %}" href="{% url 'Monitoring' %}"><ql-icon class="nav-bar__item__icon">
 school <!-- Icons -->
 </ql-icon>
 <span class="nav-bar__item__label">
 Monitoring
+</span>
+</a>
+<a class="nav-bar__item js-navigation-button  {% block keys %}  {% endblock keys %}" href="{% url 'key'%}"><ql-icon class="nav-bar__item__icon">
+vpn_key <!-- Icons -->
+</ql-icon>
+<span class="nav-bar__item__label">
+key_db
 </span>
 </a>
 </nav>
@@ -157,25 +169,33 @@ Monitoring
 <nav class="nav-panel js-nav-panel">
 <div class="nav-panel__logo">
 <div class="logo logo--blue" title="Logo"></div>
-<select name="dog-names" id="dog-names">
+<form id="myForm" action="{% url 'dashboard' %}">
+<select name="server" id="server-names"  onChange="myForm.submit()">
 {% block options%}
 
 {% endblock options%}
 </select>
-
+</form>
 </div>
-<a title="Terminal" tabindex="-1" class="nav-panel__item js-navigation-button " aria-current="page" href="index.html"><ql-icon class="nav-panel__item__icon">
+<a title="Terminal" tabindex="-1" class="nav-panel__item js-navigation-button " aria-current="page" href="{% url 'dashboard' %}"><ql-icon class="nav-panel__item__icon">
 home
 </ql-icon>
 <div class="nav-panel__item__label">
 Terminal
 </div>
 </a>
-<a title="Monitoring" tabindex="-1" class="nav-panel__item js-navigation-button" aria-current="page" href="https://www.qwiklabs.com/catalog"><ql-icon class="nav-panel__item__icon">
+<a title="Monitoring" tabindex="-1" class="nav-panel__item js-navigation-button" aria-current="page" href="{% url 'Monitoring' %}"><ql-icon class="nav-panel__item__icon">
 school
 </ql-icon>
 <div class="nav-panel__item__label">
 Monitoring
+</div>
+</a>
+<a title="Monitoring" tabindex="-1" class="nav-panel__item js-navigation-button" aria-current="page" href="{% url 'key' %}"><ql-icon class="nav-panel__item__icon">
+vpn_key
+</ql-icon>
+<div class="nav-panel__item__label">
+key_db
 </div>
 </a>
 <div class="nav-panel__spacer"></div>

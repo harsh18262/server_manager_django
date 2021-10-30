@@ -1,0 +1,34 @@
+{% extends 'base.html'%}
+<!---->
+{% block keys %} active {% endblock keys %}
+<!---->
+{% block content %}
+<table>
+  <tr>
+    <th>hostname</th>
+    <th>username</th>
+    <th>password</th>
+    <th>privatekey</th>
+  </tr>
+  {% for item in entries %}
+  <tr>
+    <td>{{item.title}}</td>
+    <td>{{item.username}}</td>
+    <td type="password">{{item.password}}</td>
+    <td>{{item.notes}}</td>
+  </tr>
+  {%endfor%}
+</table>
+   <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<button type="button" class="btn btn-primary"  onclick="window.location.href='{% url 'add' %}'">
+  <i class="fa fa-key"></i> Add New Key
+</button>
+{% endblock content %}
+<!---->
+{%block options%} {% for item in entries %}
+<option value="{{item.title}}">{{item.title}}</option>
+{%endfor%} {%endblock options%}

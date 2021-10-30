@@ -21,38 +21,38 @@
 
 <button id="button">Button</button>
 <div id="iframeHolder"></div>
-{% endcomment %}
-<button onclick="dosome()">button</button>
+{% endcomment %} {% comment %} <button onclick="dosome()">button</button>
+<!---->
+{%endcomment %}
+<br />
 <iframe
   id="iframe"
   src="http://127.0.0.1:8888/"
   width="700"
   height="450"
+  onload="javascript:dosome()"
 ></iframe>
 <script>
   const myframe = document.getElementById("iframe");
   function dosome() {
     const iframeWindow = myframe.contentWindow;
-    var hostname = "192.168.0.183";
-    var port = "22";
-    var username = "harsh";
-    var password = "khuljasimsim";
-     iframeWindow.postMessage("192.168.0.183|22|harsh|khuljasimsim", "*");
-     {% comment %} myframe.contentWindow.wssh.connect(
-      "192.168.0.183",
-      "22",
-      "harsh",
-      "khuljasimsim"
-    ); {% endcomment %}
+    iframeWindow.postMessage(
+      "{{entry.title}} | 22 | {{entry.username}} | {{entry.password}}",
+      "*"
+    );
     console.log();
   }
+  dosome();
 </script>
 
 {% endblock content %}
 <!---->
 {%block options%}
-<option value="rigatoni">Rigatoni</option>
-<option value="dave">Dave</option>
-<option value="pumpernickel">Pumpernickel</option>
-
+<!---->
+{% for item in entries %}
+<!---->
+<option value="{{item.title}}">{{item.title}}</option>
+<!---->
+{%endfor%}
+<!---->
 {%endblock options%}
