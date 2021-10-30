@@ -22,8 +22,6 @@ def home(request):
             else:
                 print("login success")
                 # return redirect("/dash", db=db)
-                context=context_processors.get_db_context(request)
-                context.update({"db": db})
                 return views.home(request, db)
                 print(db)
 
