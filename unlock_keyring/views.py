@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 import os
 import pykeepass as kp
 from dashboard import views
-from unlock_keyring import context_processors
+
 
 # Create your views here.
 db = ""
@@ -22,8 +22,6 @@ def home(request):
             else:
                 print("login success")
                 # return redirect("/dash", db=db)
-                context=context_processors.get_db_context(request)
-                context.update({"db": db})
                 return views.home(request, db)
                 print(db)
 
