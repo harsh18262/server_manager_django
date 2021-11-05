@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 import os
 import pykeepass as kp
 from dashboard import views
+import re
 
 
 # Create your views here.
@@ -43,6 +44,10 @@ def add(request):
         user = request.POST.get("user")
         pass1 = request.POST.get("pass")
         key = request.POST.get("key")
+        
+        key = key.replace('\r','')
+        re.sub('\n', '\\n', key) 
+        key=repr(key)
         db.add_entry(db.root_group, host, user, pass1,notes=key)
         db.save()
         message="entry added successfully"

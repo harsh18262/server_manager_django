@@ -37,7 +37,7 @@
   function dosome() {
     const iframeWindow = myframe.contentWindow;
     iframeWindow.postMessage(
-      "{{entry.title}} | 22 | {{entry.username}} | {{entry.password}}",
+      "{{entry.title}} | 22 | {{entry.username}} | {{entry.password}} | {{entry.notes}}",
       "*"
     );
     console.log();
@@ -49,6 +49,7 @@
 <!---->
 {%block options%}
 <!---->
+<option value="" selected disabled hidden>Host</option>
 {% for item in entries %}
 <!---->
 <option value="{{item.title}}">{{item.title}}</option>
