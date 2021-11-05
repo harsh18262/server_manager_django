@@ -10,7 +10,7 @@ import re
 db = ""
 
 
-def home(request):
+def unlock(request):
     message = ""
     if os.path.isfile("password_db.kdbx"):
         if request.method == "POST":
@@ -23,7 +23,7 @@ def home(request):
             else:
                 print("login success")
                 # return redirect("/dash", db=db)
-                return views.home(request, db)
+                return views.dashboard(request, db)
                 print(db)
 
         return render(request, "unlock.html", {"message": message})
@@ -32,11 +32,11 @@ def home(request):
         return render(request, "create.html")
 
 
-def data(request):
+def testing(request):
 
     return render(request, "add.html")
 
-def add(request):
+def add_key(request):
     db1=db
     entries=db.entries
     if request.method == "POST":

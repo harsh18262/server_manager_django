@@ -5,7 +5,7 @@ from django.shortcuts import render
 db1 = ""
 
 
-def home(request, db=db1):
+def dashboard(request, db=db1):
     global db1
     if db1=="":
         

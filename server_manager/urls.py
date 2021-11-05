@@ -21,10 +21,10 @@ from dashboard import views as dash_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', unlock_views.home),
-    path('monitoring/',unlock_views.data,name='Monitoring'),
-    path('dash/',dash_views.home,name='dashboard'),
-    path('key/',dash_views.keys,name='key'),
-    path('add/',unlock_views.add,name='add')
+    path('', unlock_views.unlock),
+    path('monitoring/',unlock_views.testing,name='Monitoring'),
+    path('dash/',dash_views.dashboard,name='dashboard'),
+    path('key/',dash_views.keys,name='keys'),
+    path('add/',unlock_views.add_key,name='add_key')
 
 ]
