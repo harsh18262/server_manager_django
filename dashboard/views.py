@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from unlock_keyring import views as uk_view
 
 # Create your views here.
 
@@ -7,13 +8,14 @@ db1 = ""
 
 def dashboard(request, db=db1):
     global db1
-    if db1=="":
-        
+    if db1 == "":
+        if db == "":
+            return redirect("/")
         db1 = db
-    else:
-        db=db1
-    title=request.GET.get('server', '')
-    print(title)
+    elif db == "":
+
+        db = db1
+    title = request.GET.get("server", "")
     entries = db.entries
     if "server" in request.GET:
         entry = db.find_entries(title=title, first=True)
@@ -27,13 +29,13 @@ def test(request):
 
     return render(request, "base.html", {"entries": entries})
 
+
 def keys(request):
-    db=db1
-    key_entry=db.entries
+    if db1 == "":
+        return redirect("/")
+    db = db1
+    key_entry = db.entries
     for i in key_entry:
         print(i.title)
 
-  
-    
-    return render(request,"keys.html",{"entries":key_entry})
-
+    return render(request, "keys.html", {"entries": key_entry})
