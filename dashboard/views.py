@@ -39,3 +39,7 @@ def keys(request):
         print(i.title)
 
     return render(request, "keys.html", {"entries": key_entry})
+
+
+def pass_db():
+    return db1

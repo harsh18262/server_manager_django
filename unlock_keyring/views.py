@@ -36,24 +36,23 @@ def testing(request):
 
     return render(request, "add.html")
 
+
 def add_key(request):
-    db1=db
-    entries=db.entries
+    db1 = db
+    entries = db.entries
     if request.method == "POST":
         host = request.POST.get("host")
         user = request.POST.get("user")
         pass1 = request.POST.get("pass")
-        key = request.POST.get("key")
-        
-        key = key.replace('\r','')
-        re.sub('\n', '\\n', key) 
-        key=repr(key)
-        db.add_entry(db.root_group, host, user, pass1,notes=key)
-        db.save()
-        message="entry added successfully"
-        return render(request, "add.html", {"message": message})
-    
-    return render(request, "add.html")
-    
-    
 
+        key = request.POST.get("key")
+
+        key = key.replace("\r", "")
+        re.sub("\n", "\\n", key)
+        key = repr(key)
+        db.add_entry(db.root_group, host, user, pass1, notes=key)
+        db.save()
+        message = "entry added successfully"
+        return render(request, "add.html", {"message": message})
+
+    return render(request, "add.html")
