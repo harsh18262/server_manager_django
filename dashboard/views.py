@@ -22,7 +22,6 @@ def dashboard(request, db=db1):
     if "server" in request.GET:
         host_selected = True
         entry = db.find_entries(title=title, first=True)
-        print(entry.notes)
         if entry.notes != "''":
             pkey_available = True
         else:
@@ -53,8 +52,6 @@ def monitoring(request):
     db = db1
     server_text = ""
     key_entry = db.entries
-    for i in key_entry:
-        print(i.title)
     server = request.GET.get("server", "")
     if "server" in request.GET:
         host_selected = True
@@ -74,8 +71,6 @@ def keys(request):
         return redirect("/")
     db = db1
     key_entry = db.entries
-    for i in key_entry:
-        print(i.title)
 
     return render(request, "keys.html", {"entries": key_entry})
 

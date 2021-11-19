@@ -24,7 +24,6 @@ def unlock(request):
                 print("login success")
                 # return redirect("/dash", db=db)
                 return views.dashboard(request, db)
-                print(db)
 
         return render(request, "unlock.html", {"message": message})
     else:
