@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "unlock_keyring",
     "dashboard",
     "usage_api",
-    "usage_dashboard",
 ]
 
 MIDDLEWARE = [
