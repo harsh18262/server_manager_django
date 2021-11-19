@@ -3,7 +3,9 @@
 {%block Terminal %} active {% endblock Terminal %}
 <!---->
 {% block content %}
+
 <br />
+{%if host_selected%}
 <iframe
   id="iframe"
   src="http://127.0.0.1:8888/"
@@ -15,24 +17,28 @@
   const myframe = document.getElementById("iframe");
   function dosome() {
     const iframeWindow = myframe.contentWindow;
+    {% if pkey_available %}
     iframeWindow.postMessage(
-      "{{entry.title}} | 22 | {{entry.username}} | {{entry.password}} | {{entry.notes}}",
+      "{{entry.title|safe}} | 22 | {{entry.username|safe}} | {{entry.password|safe}} | {{entry.notes|safe}}",
       "*"
     );
+    {% else %}
+    iframeWindow.postMessage(
+      "{{entry.title|safe}} | 22 | {{entry.username|safe}} |{{entry.password|safe}}",
+      "*"
+    );
+    {% endif %}
     console.log();
   }
   dosome();
 </script>
+{%else%}
+<div class="container">
+  <div class="d-flex justify-content-center align-middle">
+    <div>Please select a host from the dropdown menu</div>
+  </div>
+</div>
 
+{% endif %}
+<!---->
 {% endblock content %}
-<!---->
-{%block options%}
-<!---->
-<option value="" selected disabled hidden>Host</option>
-{% for item in entries %}
-<!---->
-<option value="{{item.title}}">{{item.title}}</option>
-<!---->
-{%endfor%}
-<!---->
-{%endblock options%}

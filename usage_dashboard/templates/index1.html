@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <>
+    <meta charset="utf-8" />
+    <title>charts</title>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+
+ 
+
+
+
+  <script src="https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js"></script>
+  <script src="https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js"></script>
+  <script src="https://unpkg.com/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.js"></script>
+</head>
+
+ <body class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-6" >
+          <canvas class="CPU-gauge"></canvas>
+          </div>
+    </div>
+  </body>
+
+<script>
+  // Create chart
+  var ctx = document.getElementsByClassName("CPU-gauge");
+  var chart = new Chart(ctx, {
+      type:"doughnut",
+      data: {
+          labels : ["Red","Blue"],
+          datasets: [{
+              label: "Gauge",
+              data : [10, 190],
+              backgroundColor: [
+                  "rgb(255, 99, 132)",
+                  "rgb(54, 162, 235)",
+                  "rgb(255, 205, 86)"
+              ]
+          }]
+      },
+      options: {
+          circumference: Math.PI,
+          rotation : Math.PI,
+          cutoutPercentage : 90, // precent
+          plugins: {
+              datalabels: {
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                borderColor: '#ffffff',
+                color: function(context) {
+                  return context.dataset.backgroundColor;
+                },
+                font: function(context) {
+                  var w = context.chart.width;
+                  return {
+                    size: w < 512 ? 18 : 20
+                  }
+                },
+                align: 'start',
+                anchor: 'start',
+                offset: 10,
+                borderRadius: 4,
+                borderWidth: 1,
+                formatter: function(value, context) {
+                  var i = context.dataIndex;
+                  var len = context.dataset.data.length - 1;
+                  if(i == len){
+                    return null;
+                  }
+                  return value+' %';
+                }
+              }
+          },
+          legend: {
+              display: false
+          },
+          tooltips: {
+              enabled: false
+          }
+      }
+  });
+
+
+  // DEMO Code: not relevant to example
+  function change_gauge(chart, label, data){
+
+    chart.data.datasets.forEach((dataset) => {
+      if(dataset.label == label){
+        dataset.data = data;
+      }  
+    });
+    chart.update();
+  }
+
+  var accelerating = false;
+  function accelerate(){
+    accelerating = false;
+    window.setTimeout(function(){
+    $.getJSON('/usage/cpu',"server=192.168.0.183",function(data){
+      full=data.free+data.used;
+      used=Math.round((data.used/full)*100);
+      free=100-used;
+      cpudata=[used,free];
+      change_gauge(chart,"Gauge",cpudata)
+      console.log(cpudata)
+
+    });
+        
+    }, 10);
+
+
+  }
+
+  // Start sequence
+  accelerate();
+  window.setInterval(function(){
+    if(!accelerating){
+      acelerating = true;
+      accelerate();
+    }
+  }, 6000);
+</script>
+
+
+</html>

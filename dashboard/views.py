@@ -17,17 +17,56 @@ def dashboard(request, db=db1):
         db = db1
     title = request.GET.get("server", "")
     entries = db.entries
+    entry = []
+    pkey_available = False
     if "server" in request.GET:
+        host_selected = True
         entry = db.find_entries(title=title, first=True)
+        print(entry.notes)
+        if entry.notes != "''":
+            pkey_available = True
+        else:
+            pkey_available = False
     else:
-        entry = db.find_entries(title="127.0.0.1", first=True)
+        host_selected = False
 
-    return render(request, "index.html", {"entries": entries, "entry": entry})
+    return render(
+        request,
+        "index.html",
+        {
+            "entries": entries,
+            "entry": entry,
+            "host_selected": host_selected,
+            "pkey_available": pkey_available,
+        },
+    )
 
 
 def test(request):
 
-    return render(request, "base.html", {"entries": entries})
+    return render(request, "temp.html", {"a": "a"})
+
+
+def monitoring(request):
+    if db1 == "":
+        return redirect("/")
+    db = db1
+    server_text = ""
+    key_entry = db.entries
+    for i in key_entry:
+        print(i.title)
+    server = request.GET.get("server", "")
+    if "server" in request.GET:
+        host_selected = True
+        server_text = "server=" + server
+    else:
+        host_selected = False
+
+    return render(
+        request,
+        "monitoring.html",
+        {"entries": key_entry, "server": server_text, "host_selected": host_selected},
+    )
 
 
 def keys(request):
@@ -43,3 +82,9 @@ def keys(request):
 
 def pass_db():
     return db1
+
+
+def logout(request):
+    global db1
+    db1 = ""
+    return render(request, "logout.html")

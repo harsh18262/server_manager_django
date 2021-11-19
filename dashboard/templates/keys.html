@@ -1,8 +1,13 @@
-{% extends 'base.html'%}
+ {% extends 'base.html'%}
+ {% load static %}
 <!---->
 {% block keys %} active {% endblock keys %}
 <!---->
 {% block content %}
+<script src="{% static 'js/main.js'%}"></script>
+<div class="container">
+  <div class="justify-content-center ">
+  <div>
 <table>
   <tr>
     <th>hostname</th>
@@ -14,21 +19,22 @@
   <tr>
     <td>{{item.title}}</td>
     <td>{{item.username}}</td>
-    <td type="password">{{item.password}}</td>
-    <td>{{item.notes}}</td>
+    <td type="hidetext" placeholder="test">{{item.password}} </td>
+    <td style="white-space: nowrap; overflow-y: auto; max-width:50px;">{{item.notes}}</td>
   </tr>
   {%endfor%}
 </table>
+<button type="button" class="btn btn-primary"  onclick="window.location.href='{% url 'add_key' %}'">
+  <i class="fa fa-key"></i> Add New Key
+</button>
+</div>
+</div>
+</div>
    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<button type="button" class="btn btn-primary"  onclick="window.location.href='{% url 'add_key' %}'">
-  <i class="fa fa-key"></i> Add New Key
-</button>
+
 {% endblock content %}
-<!---->
-{%block options%} {% for item in entries %}
-<option value="{{item.title}}">{{item.title}}</option>
-{%endfor%} {%endblock options%}
+

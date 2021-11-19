@@ -68,7 +68,7 @@ window.gon={};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run
 <link href="https_/www.qwiklabs.com/favicon-32.png" rel="shortcut icon">
 <link color="#3681E4" href="https://www.qwiklabs.com/favicon-svg.svg" rel="mask-icon">
 <link href="favicon-180.png" rel="apple-touch-icon-precomposed">
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 
 <link rel="stylesheet" media="screen" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons"/>
@@ -112,7 +112,7 @@ window.gon={};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run
 <ql-icon-button class="js-nav-toggle header__nav-panel-button l-mrm">menu</ql-icon-button>
 <div class="header__title">
 <h1 class="headline-5">
-<a class="logo" aria-label="Home" role="img" href="{% url 'dashboard' %}"></a>
+<!--<a class="logo" aria-label="Home" role="img" href="{% url 'dashboard' %}"></a>-->
 
 <input type="hidden" name="locale" id="header_locale"/>
 </form>
@@ -120,13 +120,10 @@ window.gon={};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run
 </h1>
 </div>
 <div class="header__actions">
-<ql-icon-button class="header__button--search js-header-search-bar-button">search</ql-icon-button>
 
-<ql-icon-button icon="help" id="help-menu-button" label="Open help menu" tip="Help"></ql-icon-button>
-<ql-menu for="help-menu-button" id="help-menu">
-<ql-menu-item data-analytics-action="opened_help" data-analytics-label="" label="Help Center" onclick="hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:null},&quot;context&quot;:&quot;&quot;})"></ql-menu-item>
-<ql-menu-item href="https://support.google.com/qwiklabs/contact/contact_us" label="Email support" target="_blank"></ql-menu-item>
-</ql-menu>
+
+<ql-icon-button icon="logout" id="logout-menu-button" tip="Logout" href="{% url 'logout' %}">asas</ql-icon-button>
+
 
 
 
@@ -144,14 +141,13 @@ window.gon={};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="run
 
 <nav class="nav-bar">
 <a class="nav-bar__item js-navigation-button  {% block Terminal %}  {% endblock Terminal %}" aria-current="page" href="{% url 'dashboard' %}"><ql-icon class="nav-bar__item__icon">
-home <!-- Icons -->
-</ql-icon>
+tag</ql-icon>
 <span class="nav-bar__item__label">
 Terminal
 </span>
 </a>
 <a class="nav-bar__item js-navigation-button  {% block Monitoring %}  {% endblock Monitoring %}" href="{% url 'Monitoring' %}"><ql-icon class="nav-bar__item__icon">
-school <!-- Icons -->
+show_chart <!-- Icons -->
 </ql-icon>
 <span class="nav-bar__item__label">
 Monitoring
@@ -169,23 +165,26 @@ key_db
 <nav class="nav-panel js-nav-panel">
 <div class="nav-panel__logo">
 <div class="logo logo--blue" title="Logo"></div>
-<form id="myForm" action="{% url 'dashboard' %}">
+<form id="myForm" action="{% block combo_submit%} {% url 'dashboard' %} {% endblock combo_submit%}">
 <select name="server" id="server-names"  onChange="myForm.submit()">
-{% block options%}
-
-{% endblock options%}
+<option value="" selected disabled hidden>Host</option>
+{% for item in entries %}
+<!---->
+<option value="{{item.title}}">{{item.title}}</option>
+<!---->
+{%endfor%}
 </select>
 </form>
 </div>
 <a title="Terminal" tabindex="-1" class="nav-panel__item js-navigation-button " aria-current="page" href="{% url 'dashboard' %}"><ql-icon class="nav-panel__item__icon">
-home
+tag
 </ql-icon>
 <div class="nav-panel__item__label">
 Terminal
 </div>
 </a>
 <a title="Monitoring" tabindex="-1" class="nav-panel__item js-navigation-button" aria-current="page" href="{% url 'Monitoring' %}"><ql-icon class="nav-panel__item__icon">
-school
+show_chart
 </ql-icon>
 <div class="nav-panel__item__label">
 Monitoring
@@ -206,11 +205,8 @@ key_db
 </div>
 
 </div>
-</ql-help>
-</a><div class="nav-panel__small-links">
-<a tabindex="-1" href="https://www.qwiklabs.com/privacy_policy">Privacy</a>
-<a tabindex="-1" href="https://www.qwiklabs.com/terms_of_service">Terms</a>
-</div>
+
+</a>
 </nav>
 <div class="nav-panel__overlay js-nav-toggle"></div>
 

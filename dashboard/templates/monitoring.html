@@ -1,0 +1,253 @@
+{% extends 'base.html'%}
+<!---->
+{%block Monitoring %} active {% endblock Monitoring %}
+<!---->
+{% block content %}
+<br />
+{%if host_selected%}
+
+<script src="https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js"></script>
+<script src="https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js"></script>
+<script src="https://unpkg.com/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.js"></script>
+<br />
+<br /><br /><br />
+<div
+  class="chart-container"
+  style="position: relative; height: 40vh; width: 80vw"
+>
+  <div class="row">
+    <div class="col-md-6">
+      <canvas class="CPU-gauge"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas class="Mem-gauge"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // Create chart
+    server = "{{server}}";
+    var ctx = document.getElementsByClassName("CPU-gauge");
+    var cpu_chart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Used", "Flue"],
+        datasets: [
+          {
+            label: "Gauge",
+            data: [10, 190],
+            backgroundColor: [
+              "rgb(255, 99, 132)",
+              "rgb(54, 162, 235)",
+              "rgb(255, 205, 86)",
+            ],
+          },
+        ],
+      },
+      options: {
+        circumference: Math.PI,
+        rotation: Math.PI,
+        cutoutPercentage: 90, // precent
+        plugins: {
+          datalabels: {
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            borderColor: "#ffffff",
+            color: function (context) {
+              return context.dataset.backgroundColor;
+            },
+            font: function (context) {
+              var w = context.chart.width;
+              return {
+                size: w < 512 ? 18 : 20,
+              };
+            },
+            align: "start",
+            anchor: "start",
+            offset: 10,
+            borderRadius: 4,
+            borderWidth: 1,
+            formatter: function (value, context) {
+              var i = context.dataIndex;
+              var len = context.dataset.data.length - 1;
+              if (i == len) {
+                return null;
+              }
+              return value + " %";
+            },
+          },
+        },
+        legend: {
+          display: false,
+        },
+        tooltips: {
+          enabled: false,
+        },
+        title: {
+          display: true,
+          text: "CPU Usage",
+          position: "bottom",
+        },
+      },
+    });
+
+    // DEMO Code: not relevant to example
+    function change_gauge(chart, label, data) {
+      chart.data.datasets.forEach((dataset) => {
+        if (dataset.label == label) {
+          dataset.data = data;
+        }
+      });
+      chart.update();
+    }
+
+    var accelerating = false;
+    function accelerate_cpu() {
+      accelerating = false;
+      window.setTimeout(function () {
+        $.getJSON("/usage/cpu", server, function (data) {
+          full = data.free + data.used;
+          used = Math.round((data.used / full) * 100);
+          free = 100 - used;
+          cores = full / 100;
+          cpu_subtitle = "No. of Cores:" + cores;
+          cpu_chart.options.title.text = ["CPU Usage", cpu_subtitle];
+          cpudata = [used, free];
+          change_gauge(cpu_chart, "Gauge", cpudata);
+          console.log(cpudata);
+        });
+      }, 10);
+    }
+
+    // Start sequence
+    accelerate();
+    window.setInterval(function () {
+      if (!accelerating) {
+        acelerating = true;
+        accelerate();
+      }
+    }, 6000);
+  </script>
+
+  <script>
+    // Create chart
+    var ctx = document.getElementsByClassName("Mem-gauge");
+    var mem_chart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Used", "Flue"],
+        datasets: [
+          {
+            label: "Gauge",
+            data: [10, 190],
+            backgroundColor: [
+              "rgb(255, 99, 132)",
+              "rgb(54, 162, 235)",
+              "rgb(255, 205, 86)",
+            ],
+          },
+        ],
+      },
+      options: {
+        circumference: Math.PI,
+        rotation: Math.PI,
+        cutoutPercentage: 90, // precent
+        plugins: {
+          datalabels: {
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            borderColor: "#ffffff",
+            color: function (context) {
+              return context.dataset.backgroundColor;
+            },
+            font: function (context) {
+              var w = context.chart.width;
+              return {
+                size: w < 512 ? 18 : 20,
+              };
+            },
+            align: "start",
+            anchor: "start",
+            offset: 10,
+            borderRadius: 4,
+            borderWidth: 1,
+            formatter: function (value, context) {
+              var i = context.dataIndex;
+              var len = context.dataset.data.length - 1;
+              if (i == len) {
+                return null;
+              }
+              return value + " %";
+            },
+          },
+        },
+        legend: {
+          display: false,
+        },
+        tooltips: {
+          enabled: false,
+        },
+        title: {
+          display: true,
+          text: "Memory Usage",
+          position: "bottom",
+        },
+        subtitle: {
+          display: true,
+          text: ["subtitle"],
+        },
+      },
+    });
+
+    var accelerating = false;
+    function accelerate_mem() {
+      accelerating = false;
+      window.setTimeout(function () {
+        $.getJSON("/usage/mem", server, function (data) {
+          total = data.MemTotal;
+          used = Math.round(((total - data.MemAvailable) / total) * 100);
+          free = 100 - used;
+          used_gb = parseFloat(
+            (total - data.MemAvailable) / (1024 * 1024)
+          ).toFixed(2);
+          free_gb = parseFloat(data.MemAvailable / (1024 * 1024)).toFixed(2);
+          total_gb = parseFloat(data.MemTotal / (1024 * 1024)).toFixed(2);
+          mem_subtitle = "Used:" + used_gb + "GB Free: " + free_gb + "GB";
+          mem_subtitle_total = "Total:" + total_gb;
+
+          mem_chart.options.title.text = [
+            "Memory Usage",
+            mem_subtitle,
+            mem_subtitle_total,
+          ];
+          memdata = [used, free];
+          change_gauge(mem_chart, "Gauge", memdata);
+          console.log(memdata);
+        });
+      }, 10);
+    }
+
+    // Start sequence
+    accelerate_cpu();
+    accelerate_mem();
+
+    window.setInterval(function () {
+      if (!accelerating) {
+        acelerating = true;
+        accelerate_cpu();
+        accelerate_mem();
+      }
+    }, 6000);
+  </script>
+</div>
+
+{%else%}
+<div class="container">
+  <div class="d-flex justify-content-center">
+    <div>Please select a host from the dropdown menu</div>
+  </div>
+</div>
+
+{% endif %}
+<!---->
+{%endblock content %}
+<!---->
+{% block combo_submit%} {% url 'Monitoring' %} {% endblock combo_submit%}
