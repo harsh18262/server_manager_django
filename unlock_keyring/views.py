@@ -27,8 +27,14 @@ def unlock(request):
 
         return render(request, "unlock.html", {"message": message})
     else:
-        os.system("pwd")
-        return render(request, "create.html")
+        pass1 = request.POST.get("pass")
+        pass2 = request.POST.get("confirm_pass")
+        print(pass1)
+        if pass1 == pass2 and pass1 != None:
+            kp.create_database("password_db.kdbx", password=pass1)
+            return render(request, "unlock.html")
+        else:
+            return render(request, "create.html")
 
 
 def testing(request):
