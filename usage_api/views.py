@@ -46,8 +46,6 @@ def memusage(request):
 def cpuusage(request):
     ssh = get_ssh(request)
     try:
-        stdin, stdout, stderr = ssh.exec_command("cat /proc/meminfo| head -n 3")
-        string = stdout.read().decode()
         stdin, stdout, stderr = ssh.exec_command("ps aux --sort -%cpu,-rss")
         data = stdout.read().decode().split("\n")
 
@@ -89,18 +87,26 @@ def get_ssh(request):
     db = pass_db()
     server = request.GET.get("server")
     entry = db.find_entries(title=server, first=True)
-    key_string = entry.notes
-    key_string = key_string.replace("\\n", "\n")
-    key_file = io.StringIO(key_string)
+    if entry.notes != "''":
+        key_string = entry.notes
+        key_string = key_string.replace("\\n", "\n")
+        key_file = io.StringIO(key_string)
 
-    private_key = private_key_find(key_file)
+        private_key = private_key_find(key_file)
 
-    ssh.connect(
-        hostname=entry.title,
-        username=entry.username,
-        password=entry.password,
-        pkey=private_key,
-    )
+        ssh.connect(
+            hostname=entry.title,
+            username=entry.username,
+            password=entry.password,
+            pkey=private_key,
+        )
+        print(f"Connected to the server")
+    else:
+        ssh.connect(
+            hostname=entry.title,
+            username=entry.username,
+            password=entry.password,
+        )
     print(f"Connected to the server")
 
     return ssh
