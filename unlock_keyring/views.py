@@ -12,12 +12,12 @@ db = ""
 
 def unlock(request):
     message = ""
-    if os.path.isfile("password_db.kdbx"):
+    if os.path.isfile("DB/password_db.kdbx"):
         if request.method == "POST":
             pass1 = request.POST.get("pass")
             try:
                 global db
-                db = kp.PyKeePass("password_db.kdbx", password=pass1)
+                db = kp.PyKeePass("DB/password_db.kdbx", password=pass1)
             except kp.exceptions.CredentialsError:
                 message = "Incorrect Password"
             else:
@@ -31,7 +31,7 @@ def unlock(request):
         pass2 = request.POST.get("confirm_pass")
         print(pass1)
         if pass1 == pass2 and pass1 != None:
-            kp.create_database("password_db.kdbx", password=pass1)
+            kp.create_database("DB/password_db.kdbx", password=pass1)
             return render(request, "unlock.html")
         else:
             return render(request, "create.html")
