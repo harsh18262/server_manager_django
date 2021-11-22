@@ -2,8 +2,8 @@ version: "3"
 services:
   server-manager:
     image: harsh18262/server_manager
-    volumes:
-      - ./password_db.kdbx:/code/DB/password_db.kdbx
+#    volumes:
+#      - ./password_db.kdbx:/code/DB/password_db.kdbx
     ports:
       - "8000:8000"
       - "8888:8888"
