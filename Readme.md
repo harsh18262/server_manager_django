@@ -30,6 +30,10 @@ you can also add your password database to /code/DB using volume
 
 
 ## Screenshots
+![Create Keyring Screenshot](https://raw.githubusercontent.com/harsh18262/server_manager_django/main/Screenshots/create_login.png)
+
+![Unlock Keyring Screenshot](https://raw.githubusercontent.com/harsh18262/server_manager_django/main/Screenshots/login.png)
+
 ![SSH Screenshot](https://raw.githubusercontent.com/harsh18262/server_manager_django/main/Screenshots/ssh.png)
 
 ![Monitoring Screenshot](https://raw.githubusercontent.com/harsh18262/server_manager_django/main/Screenshots/monitoring.png)
